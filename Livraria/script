@@ -1,0 +1,28 @@
+﻿
+
+CREATE TABLE usuario
+(
+  id serial,
+  login character varying(20),
+  senha character varying(20),
+  perfil character varying(20),
+  CONSTRAINT "pk-usuario" PRIMARY KEY (id)
+
+);
+CREATE TABLE categoria
+(
+  codigo serial,
+  descricao character varying(50),
+  CONSTRAINT "pk-categoria" PRIMARY KEY (codigo)
+);
+
+CREATE TABLE livro
+(
+  codigo serial,
+  titulo character varying(100),
+  descricao character varying(100),
+  autor character varying(100),
+  codcategoria integer,
+  CONSTRAINT "pk-livro" PRIMARY KEY (codigo),
+  CONSTRAINT "fk-livro-categoria" FOREIGN KEY (codcategoria) REFERENCES categoria
+);
