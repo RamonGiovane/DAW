@@ -7,10 +7,9 @@ import javax.validation.constraints.Size;
 
 public class Tarefa {
 	private long id;
-	
-	@NotNull(message="A descrição não pode estar vazia") @Size(min=5, max=20, message="A descrição deve ter entre 5 e 20 caracteres")
+	@NotNull
+	@Size(min=5,max=20,message="A descrição deve ter entre 5 e 20 caracteres")
 	private String descricao;
-	
 	private boolean finalizado;
 	private Calendar datafinalizacao;
 	

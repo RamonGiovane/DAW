@@ -9,7 +9,7 @@ public class ConnectionFactory {
 		try {
 			Class.forName("org.postgresql.Driver");
 			return DriverManager.getConnection
-					("jdbc:postgresql://localhost/tarefa", "postgres", "postgres");
+					("jdbc:postgresql://localhost:5432/tarefa", "postgres", "postgres");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException();

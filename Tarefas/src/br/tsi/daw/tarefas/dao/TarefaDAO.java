@@ -1,6 +1,7 @@
 package br.tsi.daw.tarefas.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,21 +29,102 @@ public class TarefaDAO {
 
 			stmt.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-	
-	//Método para adicionar nova tarefa ao banco
-	public void finaliza(Long id) {
-		String sql= "update tarefas set finalizado = ?, datafinalizado = ? where id = ?";
-		
-		if(id == null) {
-			throw new IllegalStateException("ID da tarefa não pode ser nulo");
+
+	//Lista todas as tarefas no banco
+	public List<Tarefa> getLista() {
+		String sql= "select * from tarefas";
+		List<Tarefa> tarefas = null;
+
+		try (PreparedStatement stmt = connection.prepareStatement(sql)){
+			ResultSet rs = stmt.executeQuery();
+			tarefas = new ArrayList<Tarefa>();
+			while(rs.next()) {
+				tarefas.add(populaTarefas(rs));
+			}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
+		return tarefas;
+	}
 
+	public void finaliza(Long id) {
+		
+		if(id==null) {
+			throw new IllegalStateException("Id da tarefa não pode ser nula.");
+		}
+		String sql="update tarefas set finalizado=?, datafinalizacao=? where id=?";
+
+		try (PreparedStatement stmt = connection.prepareStatement(sql)){
+			stmt.setBoolean(1, true);
+			stmt.setDate(2, new Date(Calendar.getInstance().getTimeInMillis()));
+			stmt.setLong(3, id);
+			stmt.execute();
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+	
+	public Tarefa buscaPorId(Long id) {
+		if(id==null) {
+			throw new IllegalStateException("Id da tarefa não pode ser nula.");
+		}
+		String sql= "select * from tarefas where id=?";
+
+		try (PreparedStatement stmt = connection.prepareStatement(sql)){
+			stmt.setLong(1, id);
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				return populaTarefas(rs);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+			return null;
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+
+	private Tarefa populaTarefas(ResultSet rs) throws SQLException {
+		Tarefa tarefa = new Tarefa();
+		
+		tarefa.setId(rs.getLong("id"));
+		tarefa.setDescricao(rs.getString("descricao"));
+		tarefa.setFinalizado(rs.getBoolean("finalizado"));
+		
+		
+		if(tarefa.isFinalizado()) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(rs.getDate("datafinalizacao").getTime());
+
+			tarefa.setDatafinalizacao(calendar);
+		}
+		return tarefa;
+	}
+	
+	
+	public void altera(Tarefa tarefa) {
+		String sql="update tarefas set descricao=? where id=?";
+		
+		try (PreparedStatement stmt = connection.prepareStatement(sql)){
+			stmt.setString(1, tarefa.getDescricao());
+			stmt.setLong(2, tarefa.getId());
+			
+			stmt.execute();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void removeTarefa(Long id) {
+		String sql= "delete from tarefas where id=?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)){
 			stmt.setLong(1, id);
 
@@ -50,80 +132,5 @@ public class TarefaDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	//Método para adicionar nova tarefa ao banco
-		public void altera(Tarefa tarefa) {
-			String sql= "update tarefas set descricao = ? where id = ?";
-			
-
-			try (PreparedStatement stmt = connection.prepareStatement(sql)){
-				stmt.setLong(1, tarefa.getId());
-
-				stmt.execute();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		}
-		
-	//Método para adicionar nova tarefa ao banco
-	public void pesquisa(Long id) {
-		String sql= "select * from tarefas where id = ?";
-		
-		if(id == null) {
-			throw new IllegalStateException("ID da tarefa não pode ser nulo");
-		}
-		
-
-		try (PreparedStatement stmt = connection.prepareStatement(sql)){
-			stmt.setLong(1, id);
-			
-			try(ResultSet rs = stmt.executeQuery()){
-				popularTarefa(rs);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-	
-	
-
-
-	private Tarefa popularTarefa(ResultSet rs) throws SQLException {
-		Tarefa tarefa = new Tarefa();
-		tarefa.setDescricao(rs.getString("descricao"));
-		tarefa.setId(rs.getLong("id"));
-		tarefa.setFinalizado(rs.getBoolean("finalizado"));
-		
-		if(tarefa.isFinalizado()) {
-			Calendar cal = Calendar.getInstance();
-			cal.setTimeInMillis(rs.getDate("datafinalizacao").getTime());
-		
-			tarefa.setDatafinalizacao(cal);
-		}
-		return tarefa;
-	}
-
-	//Método para adicionar nova tarefa ao banco
-	public List<Tarefa> getLista() {
-		String sql= "select * from tarefas";
-		List<Tarefa> tarefas = new ArrayList<Tarefa>();
-		try (PreparedStatement stmt = connection.prepareStatement(sql)){
-			try(ResultSet rs = stmt.executeQuery()){
-				while(rs.next()) {
-					
-					tarefas.add(popularTarefa(rs));
-				}
-			}
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return tarefas;
 	}
 }
