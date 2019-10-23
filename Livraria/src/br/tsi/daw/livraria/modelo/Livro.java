@@ -1,11 +1,15 @@
 package br.tsi.daw.livraria.modelo;
 
-public class Livro {
+import javax.validation.constraints.NotNull;
+
+public class Livro implements Comparable<Livro> {
 	//código, título, um autor, uma descrição e uma categoria.
+	@NotNull
 	private Long codigo;
 	private String titulo, descricao;
 	private String autor;
 	private Categoria categoria;
+	private double preco;
 	
 	public Long getCodigo() {
 		return codigo;
@@ -35,9 +39,20 @@ public class Livro {
 	public Categoria getCategoria() {
 		return categoria;
 	}
+	
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-	
+	public double getPreco() {
+		return preco;
+	}
+	public void setPreco(double preco) {
+		this.preco = preco;
+	}
+	@Override
+	public int compareTo(Livro livro) {
+		return Long.compare(livro.getCodigo(), this.codigo);
+	}
+	 
 	
 }

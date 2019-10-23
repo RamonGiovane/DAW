@@ -11,31 +11,40 @@
 </head>
 <body>
 		<c:import url="cabecalho.jsp"></c:import>
-		<div style="display: flex; align-items: center; margin: 60px 200px;">
+		
+		<div style="display: inline-block; align-items: center; margin: -1px 150px;">
+			
+			<h4>Carrinho</h4>
 			<table border=1>
 				<tr>
 				
 					<th>Título</th>
 					<th>Autor</th>
-					<th>Descrição</th>
-					<th>Categoria</th>
 					<th>Preço</th>
-					<th>Comprar</th>
+					<th>Remover</th>
 				</tr>
 	
-				<c:forEach items="${lista}" var="livro">
+				<c:forEach items="${carrinho}" var="livro">
 					<tr>
 						<td>${livro.titulo}</td>
 						<td>${livro.autor}</td>
-						<td>${livro.descricao}</td>
-						<td>${livro.categoria.descricao}</td>
 						<td>R$ ${livro.preco}</td>
-						<td><a href="adicionarAoCarrinho?codigo=${livro.codigo}">Comprar</a></td>
+						<td style="text-align: center"><a href="removerDoCarrinho?codigo=${livro.codigo}">X</a></td>
 						
 					</tr>
 				</c:forEach>
+				<tr>
+					<th>Total</th>
+					<th style="text-align: right; padding-right: 20px;">R$ ${valorTotal}</th>
+				</tr>
+					
+				
+			
+				
 			</table>
+			<br>
+			<a href="fecharCarrinho?livro=${livro.codigo}">Fechar carrinho</a>
 		</div>
-	
+		
 </body>
 </html>
