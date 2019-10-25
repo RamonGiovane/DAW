@@ -140,13 +140,13 @@ public class LivrariaDAO {
 		return null;
 	}
 
-	public boolean fecharCarrinho() {
-		if(Carrinho.getLivros().isEmpty()) return false;
+	public boolean fecharCarrinho(Carrinho carrinho) {
+		if(carrinho.getLivros().isEmpty()) return false;
 		
 		try {
 			Long pedido = gravarPedido();
 			
-			for (Livro livro : Carrinho.getLivros()) {
+			for (Livro livro : carrinho.getLivros()) {
 				String sql = "insert into item_pedido (codigo_pedido, codigo_livro) values(?, ?)";
 				
 				try (PreparedStatement stmt = connection.prepareStatement(sql)){

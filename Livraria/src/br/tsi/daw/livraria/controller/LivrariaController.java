@@ -1,6 +1,8 @@
 package br.tsi.daw.livraria.controller;
 
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,50 +48,53 @@ public class LivrariaController {
 		return "livraria/listar-livros"; //deve retornar para uma lista
 	}
 	
-	@RequestMapping("/adicionarAoCarrinho")
-	public String addAoCarrinho(@RequestParam("codigo") Long codigoLivro) {
+	@RequestMapping("/adicionarAoCarrinho+")
+	public String addAoCarrinho(@RequestParam("codigo") Long codigoLivro, HttpSession session) {
 		Livro livro = dao.obterLivro(codigoLivro);
-
-		//		if(!checarLogin()) {
-//			Carrinho.limparCarrinho();
-//			if(!logar()) return "livraria/formLogin";
-//		}
-//	
-			
-		Carrinho.adicionarLivro(livro);
+		Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
+		carrinho.adicionarLivro(livro);
+		session.setAttribute("carrinho", livro);
+		
 		return "redirect:exibirCarrinho";
 	}
 	
-	@RequestMapping("/removerDoCarrinho")
-	public String removerDoCarrinho(@RequestParam("codigo") Long codigoLivro) {
+	@RequestMapping("/removerDoCarrinho+")
+	public String removerDoCarrinho(@RequestParam("codigo") Long codigoLivro, HttpSession session) {
 		Livro livro = dao.obterLivro(codigoLivro);
-		Carrinho.removerLivro(livro);
+		obterCarrinho(session).removerLivro(livro);
 		return "redirect:exibirCarrinho";
 	}
-	@RequestMapping("/fecharCarrinho")
-	public String fecharCarrinho() {
-		if(dao.fecharCarrinho())
+	@RequestMapping("/fecharCarrinho+")
+	public String fecharCarrinho(HttpSession session) {
+		Carrinho  carrinho = obterCarrinho(session);
+		if(dao.fecharCarrinho(obterCarrinho(session)))
 			System.out.println("Success!"); //TODO: Mensagem decente
 		else
 			return "livraria/inicio";
-		Carrinho.limparCarrinho();
+		carrinho.limparCarrinho();
 		return "livraria/sucesso";
 	}
 	
-	@RequestMapping("/limparCarrinho")
-	public String limparCarrinho() {
-		Carrinho.limparCarrinho();
+	@RequestMapping("/limparCarrinho+")
+	public String limparCarrinho(HttpSession session) {
+		obterCarrinho(session).limparCarrinho();
 		return "redirect:exibirCarrinho";
 	}
 	
 	
-	@RequestMapping("/exibirCarrinho")
-	public String exibirCarrinho(Model model){
+	@RequestMapping("/exibirCarrinho+")
+	public String exibirCarrinho(Model model, HttpSession session){
+		Carrinho carrinho =  obterCarrinho(session);
 		
-		model.addAttribute("carrinho", Carrinho.getLivros());
-		model.addAttribute("valorTotal", Carrinho.getValorTotal());
+		model.addAttribute("carrinho", carrinho.getLivros());
+		model.addAttribute("valorTotal", carrinho.getValorTotal());
 		adicionarCategorias(model);
+		
 		return "livraria/carrinho";
+	}
+	
+	private Carrinho obterCarrinho(HttpSession session) {
+		return (Carrinho) session.getAttribute("carrinho");
 	}
 
 	private void adicionarCategorias(Model model) {
