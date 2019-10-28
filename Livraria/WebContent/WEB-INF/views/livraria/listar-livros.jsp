@@ -12,6 +12,11 @@
 <body>
 		<c:import url="cabecalho.jsp"></c:import>
 		<div style="display: flex; align-items: center; margin: 60px 200px;">
+			
+			<c:if test="${empty lista}">
+				Não há nenhum produto disponível a ser mostrado aqui :(
+			</c:if>
+			<c:if test="${not empty lista}">
 			<table border=1>
 				<tr>
 				
@@ -30,11 +35,12 @@
 						<td>${livro.descricao}</td>
 						<td>${livro.categoria.descricao}</td>
 						<td>R$ ${livro.preco}</td>
-						<td><a href="adicionarAoCarrinho?codigo=${livro.codigo}">Comprar</a></td>
+						<td><a href="adicionarAoCarrinho+?codigo=${livro.codigo}">Comprar</a></td>
 						
 					</tr>
 				</c:forEach>
 			</table>
+			</c:if>
 		</div>
 	
 </body>

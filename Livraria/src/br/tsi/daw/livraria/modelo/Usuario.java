@@ -2,12 +2,27 @@ package br.tsi.daw.livraria.modelo;
 
 public class Usuario {
 	
+	private Long id;
+
 	private String login;
 	private String senha;
 	private TipoUsuario tipoUsuario;
 	
 
-	
+	public Usuario() {}
+
+	public Usuario(String login, String senha, TipoUsuario tipoUsuario) {
+		this.login = login;
+		this.senha = senha;
+		this.tipoUsuario = tipoUsuario;
+		
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getLogin() {
 		return login;
 	}

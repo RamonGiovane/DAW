@@ -15,35 +15,50 @@
 		<div style="display: inline-block; align-items: center; margin: -1px 150px;">
 			
 			<h4>Carrinho</h4>
-			<table border=1>
-				<tr>
-				
-					<th>Título</th>
-					<th>Autor</th>
-					<th>Preço</th>
-					<th>Remover</th>
-				</tr>
-	
-				<c:forEach items="${carrinho}" var="livro">
-					<tr>
-						<td>${livro.titulo}</td>
-						<td>${livro.autor}</td>
-						<td>R$ ${livro.preco}</td>
-						<td style="text-align: center"><a href="removerDoCarrinho?codigo=${livro.codigo}">X</a></td>
-						
-					</tr>
-				</c:forEach>
-				<tr>
-					<th>Total</th>
-					<th style="text-align: right; padding-right: 20px;">R$ ${valorTotal}</th>
-				</tr>
-					
-				
+			
+			<c:if test="${empty carrinho}">
+				Seu carrinho está vazio. Explore!
+			</c:if>
+			<c:if test="${not empty carrinho}">
 			
 				
-			</table>
-			<br>
-			<a href="fecharCarrinho?livro=${livro.codigo}">Fechar carrinho</a>
+				<table border=1>
+					<tr>
+						<th>Quantidade</th>
+						<th>Adicionar</th>
+						<th>Título</th>
+						<th>Autor</th>
+						<th>Preço</th>
+						<th>Remover</th>
+					</tr>
+		
+					<c:forEach items="${carrinho}" var="livro">
+						<tr>
+							<td style="text-align: center">${livro.quantidade}</td>
+							<td style="text-align: center"><a href="adicionarAoCarrinho+?codigo=${livro.codigo}">^</a></td>
+							<td>${livro.titulo}</td>
+							<td>${livro.autor}</td>
+							<td>R$ ${livro.preco}</td>
+							<td style="text-align: center"><a href="removerDoCarrinho+?codigo=${livro.codigo}">X</a></td>
+							
+						</tr>
+					</c:forEach>
+					<tr>
+						<th>Total</th>
+						<th style="text-align: right; padding-right: 20px;">R$ ${valorTotal}</th>
+					</tr>
+						
+					
+				
+					
+				</table>
+				<br>
+				<a href="fecharCarrinho+?livro=${livro.codigo}">Fechar carrinho</a>
+			</c:if>
+			
+			<c:if test="${sessionScope.erroCadastro eq true}">
+				<p>ERRO: Não há mais cópias disponíveis deste exemplar.</p>
+			</c:if>
 		</div>
 		
 </body>

@@ -11,7 +11,7 @@
 	<c:import url="cabecalho.jsp"></c:import>
 	<br>
 	<div style="display:inline-block; margin-left: 60px">
-		Parabéns! Sua compra foi realizada com sucesso!
+		Cadastro realizado com sucesso.
 		<br>
 		<a href="inicio">Voltar ao Início</a>
 	</div>

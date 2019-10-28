@@ -10,11 +10,16 @@
 <body>
 	<c:import url="cabecalho.jsp"></c:import>
 	<div style="display:inline-block; margin-left: 60px">
-		<form action="efetuarLogin" method="post"> <br>
-			Login:<input type="text" name="usuario"> <br>
-			Senha:<input type="password" name="senha">		
-			<input type="submit" value="Entrar">
+		<h4>Cadastrar-se</h4>
+		<form action="signup" method="post"> <br>
+			Nome de Usuário:<input type="text" name="usuario"> <br>
+			Defina uma Senha:<input type="password" name="senha">		
+			<input type="submit" value="Cadastrar">
 		</form>
+		
+		<c:if test="${sessionScope.erroCadastro eq true}">
+			<p>ERRO: Este usuário já existe.</p>
+		</c:if>
 	</div>
 	
 </body>

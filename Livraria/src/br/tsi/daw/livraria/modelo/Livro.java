@@ -11,6 +11,19 @@ public class Livro implements Comparable<Livro> {
 	private Categoria categoria;
 	private double preco;
 	
+	private int quantidade;
+	
+	public Livro() {
+		quantidade = 1;
+	}
+	
+
+	public int getQuantidade() {
+		return quantidade;
+	}
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -52,6 +65,17 @@ public class Livro implements Comparable<Livro> {
 	@Override
 	public int compareTo(Livro livro) {
 		return Long.compare(livro.getCodigo(), this.codigo);
+	}
+
+
+	public void adicionarQuantidade() {
+		quantidade++;
+	}
+
+
+	public void diminuirQuantidade() {
+		quantidade--;
+		
 	}
 	 
 	

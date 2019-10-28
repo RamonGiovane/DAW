@@ -8,11 +8,13 @@
 	<context:component-scan
 		base-package="br.tsi.daw.livraria" />
 	<mvc:annotation-driven />
+	<mvc:view-controller path="/livraria" view-name="inicio"/>
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+	
 	<mvc:interceptors>
 			<bean class="br.tsi.daw.livraria.interceptor.AutorizadorInterceptor"></bean>
 	</mvc:interceptors>

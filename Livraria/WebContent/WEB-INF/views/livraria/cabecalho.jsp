@@ -27,11 +27,29 @@
 	
 				<c:forEach items="${categorias}" var="cat">
 					<tr>
-						
 						<td><a href="buscarLivroPorCategoria?id=${cat.id}">${cat.descricao}</a></td>
 					</tr>
 				</c:forEach>
 			</table>
+		</div>
+		
+		<div style="margin-left: 200px">
+			<br>
+			
+			
+			<a href="inicio">HOME</a>
+			 | 
+			<a href="exibirCarrinho+">CARRINHO</a>
+			<c:if test="${not empty sessionScope.usuarioLogado}">
+				 | 
+				<a href="pedidos+">PEDIDOS</a>				
+				 | 
+				<a href="logout">SAIR</a>
+			</c:if>
+			<c:if test="${empty sessionScope.usuarioLogado}">
+				 | 
+				<a href="formLogin">ENTRAR</a>
+			</c:if>
 		</div>
 </body>
 </html>
