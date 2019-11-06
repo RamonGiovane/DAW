@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="corpo">
+		<h:form>
+			<fieldset>
+				<legend>Dados da Nota</legend>
+				<h:outputLabel value="CNPJ"></h:outputLabel>
+				<h:inputText value="#{notaFiscalBean.notaFiscal.cnpj}"></h:inputText>
+				
+				<h:outputLabel value="Data"></h:outputLabel>
+				<h:inputText value="#{notaFiscalBean.notaFiscal.data.time}">
+					<f:convertDateTime pattern="dd/MM/yyy" timeZone="America/Sao_Paulo"></f:convertDateTime>
+				</h:inputText>
+				
+			</fieldset>
+			
+			<h:commandButton value="Gravar" action="#{notaFiscalBean.gravar}"></h:commandButton>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
